@@ -30,15 +30,17 @@ public class UpperLogic implements Runnable{
     public void run()
     {
         try{
+            Thread.sleep(5000);
             BufferedReader clientInfo = new BufferedReader(new InputStreamReader(this.connection.getInputStream()));
             
             System.out.println("Cliente Conectado: " + this.connection.getInetAddress().getHostAddress() + "-" + Thread.currentThread().getName());
+            
             String test = clientInfo.readLine();
             System.out.println("Mensagem Recebida(Server): " + test);
 
             String newName = test.toUpperCase();
             System.out.println("New name: " + newName);
-            Thread.sleep(5000);
+            
             
            
             DataOutputStream infoToClient = new DataOutputStream(this.connection.getOutputStream());

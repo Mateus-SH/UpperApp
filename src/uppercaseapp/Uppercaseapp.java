@@ -13,33 +13,96 @@ import java.net.*;
  *
  * @author mateu
  */
-public class Uppercaseapp {
+public class Uppercaseapp extends Thread{
+
+    private String nome;
+    private String mgs;
+    /**
+     * @return the nome
+     */
+    public String getNome() {
+        return nome;
+    }
 
     /**
-     * @param args the command line arguments
+     * @param nome the nome to set
      */
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
-    public static void main(String[] args) throws InterruptedException, UnknownHostException, IOException {
-        // TODO code application logic here
-        
+    /**
+     * @return the mgs
+     */
+    public String getMgs() {
+        return mgs;
+    }
+
+    /**
+     * @param mgs the mgs to set
+     */
+    public void setMgs(String mgs) {
+        this.mgs = mgs;
+    }
+
+    public Uppercaseapp(String nomeCliente, String msg)
+    {
+        this.nome = nomeCliente;
+        this.mgs = msg;
+    }
+    
+    
+    /**
+     * @param args the command line arguments
+     * @throws java.lang.InterruptedException
+     * @throws java.net.UnknownHostException
+     */
+    public static void main(String[] args) throws InterruptedException, UnknownHostException, IOException {  
+        int i, nThreads;
+        Uppercaseapp clients[];
         Scanner scanf = new Scanner(System.in);
         
+        System.out.println("Digite o número de clientes: ");
+        nThreads = scanf.nextInt();
+     
+        scanf.nextLine();
+        
+        clients = new Uppercaseapp[nThreads];
+        
+        for(i = 0; i < nThreads; i++)
+        {
+            System.out.println("Mensagem do Cliente" + String.valueOf(i) + ":");
+            clients[i] = new Uppercaseapp("Cliente" + String.valueOf(i), scanf.nextLine());
+        }
+        
+        for(i = 0; i < nThreads; i++)
+        {
+            clients[i].start();
+        }
+    }
+    
+    
+    
+    @Override
+    public void run()
+    {
         try{
             Socket clientSocket = new Socket("localhost", 123);             
             DataOutputStream   infoToServer = new DataOutputStream(clientSocket.getOutputStream());
-            String msgToServer = scanf.nextLine();
+            String msgToServer = this.mgs;
+            System.out.println(this.nome + " - Manda Mensagem: " + this.mgs);
             infoToServer.writeBytes(msgToServer + "\n");            
             BufferedReader infoServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             String msgToClient = infoServer.readLine();           
             clientSocket.close();
-            System.out.println(msgToClient);
+            System.out.println("Servidor responde: " + msgToClient);
             
         }catch(Exception e)
         {
             System.out.println("Erro: " + e.getMessage());
             
-        }
-       
+        }    
     }
+    
     
 }
