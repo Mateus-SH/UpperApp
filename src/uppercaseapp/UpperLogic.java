@@ -30,11 +30,10 @@ public class UpperLogic implements Runnable{
     public void run()
     {
         try{
-            Thread.sleep(5000);
             BufferedReader clientInfo = new BufferedReader(new InputStreamReader(this.connection.getInputStream()));
+            DataOutputStream infoToClient = new DataOutputStream(this.connection.getOutputStream());
             
             System.out.println("Cliente Conectado: " + this.connection.getInetAddress().getHostAddress() + "-" + Thread.currentThread().getName());
-            
             String test = clientInfo.readLine();
             System.out.println("Mensagem Recebida(Server): " + test);
 
@@ -42,9 +41,18 @@ public class UpperLogic implements Runnable{
             System.out.println("New name: " + newName);
             
             
+            BufferedReader bf = new BufferedReader(new FileReader("C:\\Users\\LAR\\Documents\\GitHub\\UpperApp\\src\\uppercaseapp\\index.html"));
+            String linha;
+            System.out.println("Eu li essa merda!");
+            while((linha = bf.readLine()) != null)
+            {
+                //System.out.println(linha);
+                infoToClient.writeBytes(linha + "\r\n");
+
+            }
+            bf.close();
            
-            DataOutputStream infoToClient = new DataOutputStream(this.connection.getOutputStream());
-            infoToClient.writeBytes(newName + "\n");
+            Thread.sleep(5000);
         }catch(IOException e)
         {
             e.getStackTrace();

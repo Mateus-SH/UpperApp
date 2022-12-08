@@ -50,8 +50,7 @@ public class Uppercaseapp extends Thread{
         this.nome = nomeCliente;
         this.mgs = msg;
     }
-    
-    
+   
     /**
      * @param args the command line arguments
      * @throws java.lang.InterruptedException
@@ -87,15 +86,32 @@ public class Uppercaseapp extends Thread{
     public void run()
     {
         try{
-            Socket clientSocket = new Socket("localhost", 123);             
+            Socket clientSocket = new Socket("localhost", 5000);             
             DataOutputStream   infoToServer = new DataOutputStream(clientSocket.getOutputStream());
             String msgToServer = this.mgs;
             System.out.println(this.nome + " - Manda Mensagem: " + this.mgs);
             infoToServer.writeBytes(msgToServer + "\n");            
             BufferedReader infoServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            String msgToClient = infoServer.readLine();           
+            
+            
+            String msgToClient; 
+            String path = "C:\\Users\\LAR\\Documents\\GitHub\\UpperApp\\src\\uppercaseapp\\";
+            
+            BufferedWriter escritor = new BufferedWriter(new FileWriter(path + "index2.html"));
+            
+            System.out.println("Servidor responde: ");            
+            while((msgToClient = infoServer.readLine()) != null)
+            {
+                System.out.println(msgToClient);
+                escritor.write("OI " + "\r\n");            
+            }
+            
+            escritor.close();
+            
+            
+            
             clientSocket.close();
-            System.out.println("Servidor responde: " + msgToClient);
+            
             
         }catch(Exception e)
         {
