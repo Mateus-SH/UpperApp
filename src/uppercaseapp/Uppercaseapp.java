@@ -80,39 +80,42 @@ public class Uppercaseapp extends Thread{
         }
     }
     
-    
-    
     @Override
     public void run()
     {
         try{
             Socket clientSocket = new Socket("localhost", 5000);             
-            DataOutputStream   infoToServer = new DataOutputStream(clientSocket.getOutputStream());
+            /*DataOutputStream   infoToServer = new DataOutputStream(clientSocket.getOutputStream());
             String msgToServer = this.mgs;
             System.out.println(this.nome + " - Manda Mensagem: " + this.mgs);
-            infoToServer.writeBytes(msgToServer + "\n");            
+            infoToServer.writeBytes(msgToServer + "\n"); */           
             BufferedReader infoServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             
             
-            String msgToClient; 
-            String path = "C:\\Users\\LAR\\Documents\\GitHub\\UpperApp\\src\\uppercaseapp\\";
-            
-            BufferedWriter escritor = new BufferedWriter(new FileWriter(path + "index2.html"));
-            
-            System.out.println("Servidor responde: ");            
+            String msgToClient = null; 
+            String path = "C:\\Users\\mateu\\Documents\\NetBeansProjects\\uppercaseapp\\src\\uppercaseapp\\";
+
+            FileOutputStream arq = new FileOutputStream(path + "index2.html");
+            PrintWriter pw = new PrintWriter(arq);
+
+            System.out.println("Servidor responde: ");
             while((msgToClient = infoServer.readLine()) != null)
             {
+                pw.print(msgToClient + "\n");          
                 System.out.println(msgToClient);
-                escritor.write("OI " + "\r\n");            
             }
-            
-            escritor.close();
-            
-            
-            
+            pw.close();
+            System.out.println("Que saco!");
+            arq.close();
+            System.out.println("Terminei!");
+            infoServer.close();
+            //infoToServer.close();
             clientSocket.close();
             
+            Runtime.getRuntime().exec("cmd.exe /C start brave.exe C:\\Users\\mateu\\Documents\\NetBeansProjects\\uppercaseapp\\src\\uppercaseapp\\index2.html");
             
+            
+                        
         }catch(Exception e)
         {
             System.out.println("Erro: " + e.getMessage());

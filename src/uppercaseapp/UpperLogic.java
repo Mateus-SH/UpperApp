@@ -30,27 +30,33 @@ public class UpperLogic implements Runnable{
     public void run()
     {
         try{
-            BufferedReader clientInfo = new BufferedReader(new InputStreamReader(this.connection.getInputStream()));
+            // BufferedReader clientInfo = new BufferedReader(new InputStreamReader(this.connection.getInputStream()));
             DataOutputStream infoToClient = new DataOutputStream(this.connection.getOutputStream());
             
             System.out.println("Cliente Conectado: " + this.connection.getInetAddress().getHostAddress() + "-" + Thread.currentThread().getName());
-            String test = clientInfo.readLine();
-            System.out.println("Mensagem Recebida(Server): " + test);
+            // String test = clientInfo.readLine();
+            // System.out.println("Mensagem Recebida(Server): " + test);
 
-            String newName = test.toUpperCase();
-            System.out.println("New name: " + newName);
+            //String newName = test.toUpperCase();
+            //System.out.println("New name: " + newName);
             
             
-            BufferedReader bf = new BufferedReader(new FileReader("C:\\Users\\LAR\\Documents\\GitHub\\UpperApp\\src\\uppercaseapp\\index.html"));
+            BufferedReader bf = new BufferedReader(new FileReader("C:\\Users\\mateu\\Documents\\NetBeansProjects\\uppercaseapp\\src\\uppercaseapp\\index.html"));
             String linha;
             System.out.println("Eu li essa merda!");
+            
+                    
             while((linha = bf.readLine()) != null)
             {
                 //System.out.println(linha);
-                infoToClient.writeBytes(linha + "\r\n");
+                infoToClient.writeBytes(linha + "\n");
 
             }
+            System.out.println("Terminei!");
+            //clientInfo.close();
             bf.close();
+            infoToClient.close();
+            
            
             Thread.sleep(5000);
         }catch(IOException e)
