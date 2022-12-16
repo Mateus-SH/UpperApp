@@ -16,7 +16,6 @@ import java.net.*;
 public class Uppercaseapp extends Thread{
 
     private String nome;
-    private String mgs;
     /**
      * @return the nome
      */
@@ -31,26 +30,11 @@ public class Uppercaseapp extends Thread{
         this.nome = nome;
     }
 
-    /**
-     * @return the mgs
-     */
-    public String getMgs() {
-        return mgs;
-    }
-
-    /**
-     * @param mgs the mgs to set
-     */
-    public void setMgs(String mgs) {
-        this.mgs = mgs;
-    }
-
-    public Uppercaseapp(String nomeCliente, String msg)
+    public Uppercaseapp(String nomeCliente)
     {
         this.nome = nomeCliente;
-        this.mgs = msg;
     }
-   
+
     /**
      * @param args the command line arguments
      * @throws java.lang.InterruptedException
@@ -63,15 +47,11 @@ public class Uppercaseapp extends Thread{
         
         System.out.println("Digite o número de clientes: ");
         nThreads = scanf.nextInt();
-     
-        scanf.nextLine();
-        
         clients = new Uppercaseapp[nThreads];
         
         for(i = 0; i < nThreads; i++)
         {
-            System.out.println("Mensagem do Cliente" + String.valueOf(i) + ":");
-            clients[i] = new Uppercaseapp("Cliente" + String.valueOf(i), scanf.nextLine());
+            clients[i] = new Uppercaseapp("Cliente" + String.valueOf(i));
         }
         
         for(i = 0; i < nThreads; i++)
@@ -95,24 +75,22 @@ public class Uppercaseapp extends Thread{
             String msgToClient = null; 
             String path = "C:\\Users\\mateu\\Documents\\NetBeansProjects\\uppercaseapp\\src\\uppercaseapp\\";
 
-            FileOutputStream arq = new FileOutputStream(path + "index2.html");
+            FileOutputStream arq = new FileOutputStream(path + "index"+ Thread.currentThread().getName()+".html");
             PrintWriter pw = new PrintWriter(arq);
 
-            System.out.println("Servidor responde: ");
+            System.out.println("Servidor responde a " + this.nome);
             while((msgToClient = infoServer.readLine()) != null)
             {
                 pw.print(msgToClient + "\n");          
                 System.out.println(msgToClient);
             }
             pw.close();
-            System.out.println("Que saco!");
             arq.close();
-            System.out.println("Terminei!");
             infoServer.close();
             //infoToServer.close();
             clientSocket.close();
             
-            Runtime.getRuntime().exec("cmd.exe /C start brave.exe C:\\Users\\mateu\\Documents\\NetBeansProjects\\uppercaseapp\\src\\uppercaseapp\\index2.html");
+            Runtime.getRuntime().exec("cmd.exe /C start brave.exe C:\\Users\\mateu\\Documents\\NetBeansProjects\\uppercaseapp\\src\\uppercaseapp\\index" + Thread.currentThread().getName()+ ".html");
             
             
                         

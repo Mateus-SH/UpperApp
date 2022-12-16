@@ -52,13 +52,14 @@ public class UpperLogic implements Runnable{
                 infoToClient.writeBytes(linha + "\n");
 
             }
+            Thread.currentThread().sleep(5000);
             System.out.println("Terminei!");
             //clientInfo.close();
             bf.close();
             infoToClient.close();
             
            
-            Thread.sleep(5000);
+
         }catch(IOException e)
         {
             e.getStackTrace();
